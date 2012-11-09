@@ -87,7 +87,7 @@ function showError(error)
    <h4>Welcome   <?php
           echo $_SESSION['Username'];
           ?> </h4>
-    <p>You are currently at: </p>
+   <!-- <p>You are currently at: </p> -->
   <script> //getLocation();  This currently causes an error !!!!!!!!!!!
   </script>
  

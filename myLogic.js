@@ -1,14 +1,58 @@
+
+	/**
+	*	Inspired by www.appliness.com. Source code at: riagora.com/mobile/hammer/hammer.zip
+	*	Modified by Calvin Fernandez 	@Stanford University for CS147 cfernand@cs.stanford.edu
+	*	Modified by Roberto Goizueta 	@Stanford University for CS147 goizueta@stanford.edu
+	*	Modified by Cagla Kaymaz	@Stanford University for CS147 ckaymaz@stanford.edu	
+	*	Last modified 2012 
+	**/	
+
 // JavaScript Document
 $(function(){
-        var zoom = new ZoomView('#zoom','#zoom :first');
-        var zoomlisten = new ZoomListener('#listener', '#listener :first');
+        var zoomlisten = new ZoomListener('#pinch', '#pinch :first');
     });
 
+
+function DisplayPhotoOptions()
+{
+		
+}
+
+function MakePicture(xhr)
+{
+	
+	var response = JSON.parse(xhr.responseText);
+	var img = document.createElement('img');
+	img.setAttribute('id', 'newPhoto');
+	img.setAttribute('src', response.url);
+	if (img.width > img.height)
+		img.width = 200;
+	else
+		img.height = 200;	
+	var zoomDiv = document.createElement('div');
+	zoomDiv.setAttribute("class", "zoomProps");
+	zoomDiv.setAttribute("id", response.id);
+	var styleDiv = document.createElement('div');
+	styleDiv.setAttribute('class', 'polaroid upSky');
+		
+	zoomDiv.appendChild(styleDiv);
+	styleDiv.appendChild(img);
+	document.getElementById("main").appendChild(zoomDiv);
+									
+      	var imgID = "#" + response.id;
+       	var hammerString = "#" + response.id + " :first";
+      	var z = new ZoomView(imgID, hammerString);   
+	$(imgID).bind('tap', function(e)
+        {
+        	alert("tap");
+	});
+	  
+	return img;
+}
 
     /**
     * Inspired by Jesse Guardiani - May 1st, 2012
     */
-	
 	var zIndexBackup = 10;
 	var itemsOnCanvas = 1;
 
@@ -132,46 +176,52 @@ $(function(){
         
         var start2  = pts2[0];
         var end2    = pts2[len2 - 1];
-        
-	//If the distance between the two fingers both x and y is less than 80//
-	if ( Math.abs(end1[0] - end2[0]) < 80 )
+       
+	//Make sure the motion is actually a quick pinch. Otherwise it was just a slow closing of the fingers 
+	if (len1 < 50)
 	{
-		if ( Math.abs(end1[1] - end2[1]) < 100 )
+		//If the distance between the two fingers both x and y is less than 80//
+		if ( Math.abs(end1[0] - end2[0]) < 80 )
 		{
-			//If at least on of the two fingers traveled more than 100 in either the x or y direction//
-			if ( ( Math.abs(start1[0] - end1[0]) >= 80 ) || ( Math.abs(start1[1] - end1[1]) >= 80 )
-				|| (Math.abs(start2[0] - end2[0]) >= 80 ) || ( Math.abs(start2[1] - end2[1]) >= 80 ) )
+			if ( Math.abs(end1[1] - end2[1]) < 100 )
 			{
-				//Check all the points with each other	//
-				for ( i = 0; i < len1 - 1; i ++ )
+				//If at least on of the two fingers traveled more than 100 in either the x or y direction//
+				if ( ( Math.abs(start1[0] - end1[0]) >= 80 ) || ( Math.abs(start1[1] - end1[1]) >= 80 )
+					|| (Math.abs(start2[0] - end2[0]) >= 80 ) || ( Math.abs(start2[1] - end2[1]) >= 80 ) )
 				{
-					var area1 = Math.max( 5, Math.abs( pts1[i][0] - pts2[i][0] ) ) * Math.max( 5, Math.abs( pts1[i][1] - pts2[i][1] ) );
-					var area2 = Math.max( 5, Math.abs(pts1[i+1][0] - pts2[i+1][0] ) ) * Math.max( 5, Math.abs( pts1[i+1][1] - pts2[i+1][1] ) );
-					if ( area1 - area2 + 100 < 0 )
+					//Check all the points with each other	//
+					for ( i = 0; i < len1 - 1; i ++ )
 					{
-						return 0;
-					}
-				}		
+						var area1 = Math.max( 5, Math.abs( pts1[i][0] - pts2[i][0] ) ) * Math.max( 5, Math.abs( pts1[i][1] - pts2[i][1] ) );
+						var area2 = Math.max( 5, Math.abs(pts1[i+1][0] - pts2[i+1][0] ) ) * Math.max( 5, Math.abs( pts1[i+1][1] - pts2[i+1][1] ) );
+						if ( area1 - area2 + 100 < 0 )
+						{
+							return 0;
+						}
+					}		
+				}
+				else
+				{
+//					alert("at least one finger didn't travle more than 100 in either direction");
+					return 0;
+				}	
 			}
 			else
 			{
-//				alert("at least one finger didn't travle more than 100 in either direction");
+//				alert("y pinch wasn't closed");
 				return 0;
-			}	
-		}
+			}
+        	}
 		else
 		{
-//			alert("y pinch wasn't closed");
+//			alert("x pinch wasn't closed");
 			return 0;
 		}
-        }
+	}
 	else
 	{
-//		alert("x pinch wasn't closed");
-//		alert(pts1);
-//		alert(pts2);
 		return 0;
-	} 
+	}
         return 1;   
     }
 	function wasDrop(pts1, pts2)
@@ -204,7 +254,7 @@ $(function(){
 							if ( area2 < area1 - 100 )
 							{
 			//					alert("area not right");
-								alert( area2 - area1);
+							//	alert( area2 - area1);
 								return 0;
 							}
 						}		
@@ -235,21 +285,18 @@ $(function(){
 	}   
  
     function ZoomView(container, element) {
-
-        container = $(container).hammer({
-            prevent_default: true,
+	container = $(container).hammer({
+	    prevent_default: true,
             scale_treshold: 0,
             drag_min_distance: 0
         });
-
-        element = $(element);
-
+	element = $(element);
 
         var displayWidth = container.width();
         var displayHeight = container.height();
 
         //These two constants specify the minimum and maximum zoom
-        var MIN_ZOOM = 1;
+        var MIN_ZOOM = 0;
         var MAX_ZOOM = 3;
 
         var scaleFactor = 1;
@@ -313,8 +360,8 @@ $(function(){
               e = event;
 		scaleFactor = previousScaleFactor * event.scale;
 			
-              scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
-              transform(event);
+              scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM)); 
+	      transform(event);
             tch1 = [e.touches[0].x, e.touches[0].y],
             tch2 = [e.touches[1].x, e.touches[1].y]
         	pts1.push(tch1);  
@@ -326,8 +373,20 @@ $(function(){
         	var p = wasPinch(pts1, pts2);
 		if ( p == 1)
 		{	    
-			document.getElementById("zoom").innerHTML = "";
-            		document.getElementById("output").innerHTML = "<h1> Great! Now just drop it on your friend's screen. </h1>";
+			container.html(""); 
+			container.remove();
+			container = null;
+			delete container;
+			$("#alert").fadeIn("slow", function h()
+			{
+				$(this).fadeOut(3000);
+			});	
+		}
+		if (scaleFactor < 1 )
+		{
+			scaleFactor = 1;
+			previousScaleFactor = 1;
+			transform(event);
 		}
 	});
 
@@ -367,7 +426,8 @@ $(function(){
     var transforming = false;
     var pts1 = [];
     var pts2 = [];
-    
+	var dropped = 0; 
+	
     function ZoomListener(container, element) 
     {
         var tch1 = 0, 
@@ -394,47 +454,50 @@ $(function(){
 
         container.bind("transform", function(event) {
             var e = event;
-            /*if ( t == 1 )
-            {
-              //Query Server for unpulled elements//
-              //If unpulled element exists create a new div for it and place it on the screen//
-              //For now we'll just do one item and make it the stock image//
-              if ( numGetItems == 0 )
-              {
-
-                //Construct a new instance//   
-                var zdiv = document.createElement('div');
-                var pdiv = document.createElement('div');
-                var itag = document.createElement('img');
-                zdiv.setAttribute('id', 'getZoom');
-                zdiv.setAttribute('class', 'zoomProps');
-                pdiv.setAttribute('class', 'polaroid');
-                itag.src = 'images/arvind.jpg';
-
-                itag.style.height = '200px';
-
-                document.getElementById("listener").appendChild(zdiv);
-                zdiv.appendChild(pdiv);
-                pdiv.appendChild(itag);
-                //Initialize all listeners on this object so it can be moved around//
-                var getZoom = new ZoomView('#getZoom', '#getZoom :first');
-
-                //Set number of items on the screen to one. For now we'll only allow one
-                //but we can change it later//
-                numGetItems = 1;
-              }
-            }*/
-
             tch1 = [e.touches[0].x, e.touches[0].y],
             tch2 = [e.touches[1].x, e.touches[1].y]
-        	pts1.push(tch1);  
+      		pts1.push(tch1);  
         	pts2.push(tch2);
 		var d = wasDrop(pts1, pts2);
-		if ( d == 1)
-			alert(d);
+		if ( d == 1 && dropped == 0)
+		{
+			dropped = 1				
+			xhr = new XMLHttpRequest();
+			xhr.open("GET", "QueryDatabase.php", true);			
+			xhr.send();
+			xhr.onreadystatechange = function(e)	
+			{
+			
+				if (xhr.readyState == 4 && xhr.status == 200) 
+				{
+					MakePicture(xhr);
+					/*var response = JSON.parse(xhr.responseText);
+					var img = document.createElement('img');
+					img.setAttribute('id', 'newPhoto');
+					img.setAttribute('src', response.url);
+					if (img.width > img.height)
+						img.width = 200;
+					else
+						img.height = 200;	
+					var zoomDiv = document.createElement('div');
+					zoomDiv.setAttribute("class", "zoomProps");
+					zoomDiv.setAttribute("id", response.id);
+					var styleDiv = document.createElement('div');
+					styleDiv.setAttribute('class', 'polaroid upSky');
+		
+					zoomDiv.appendChild(styleDiv);
+					styleDiv.appendChild(img);
+					document.getElementById("main").appendChild(zoomDiv);
+									
+                 			var imgID = "#" + response.id;
+                            		var hammerString = "#" + response.id + " :first";*/
+				}
+			}
+		}	
 	});
 
         container.bind("transformend", function(event) {
-	
+		dropped = 0;	
 	});
-    }
+		
+}
