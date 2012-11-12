@@ -28,7 +28,9 @@
 
 	<div data-role="content">	
 		<h2>Help</h2>		
-		<p>You are now in the help page.Here you can find the FAQ as well as a tutorial of Pinch </p>
+		<p>After logging in, click on the Pinch page to:</p>
+		<p>- Select or take a photo and "pinch" it with your fingers so others can access it.</p>
+		<p>- Do the opposite gesture to get a picture someone nearby has already pinched.</p>
 	</div><!-- /content -->
 	
    <div data-role="footer" data-id="samebar" class="nav-glyphish-example" data-position="fixed" data-tap-toggle="false">

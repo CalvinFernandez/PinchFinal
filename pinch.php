@@ -19,6 +19,13 @@
 <script src="jquery.mobile-1.2.0.js"></script>
 <script src="hammer.js"></script>
 <script src="jquery.hammer.js"></script>
+
+</head> 
+
+<body>
+<!-- Start of pinch page: #pinch -->
+
+<div data-role="page" id="main">
 <script src="myLogic.js"></script>
 
 <script>
@@ -89,13 +96,6 @@
 	}
 	
 </script> 
-
-</head> 
-
-<body>
-<!-- Start of pinch page: #pinch -->
-
-<div data-role="page" id="main">
 	<div data-role="header" id="output" style="height:auto;"><!-- added output here -->
         	<h1>Pinch</h1>
         	<!-- Hidden form for that uploads image to server as soon as it has been selected -->	

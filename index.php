@@ -22,7 +22,13 @@ if($_SESSION['Username'] != "")
 <script src="hammer.js"></script>
 <script src="jquery.hammer.js"></script>
 <script src="myLogic.js"></script>
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+</head>
+<body>
+<a name="#loginPinch"></a>
+<!-- Start of first page: #logingOne -->
+   <div data-role="page" id="loginOne">
+   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
     <script>
 
@@ -74,11 +80,6 @@ function showError(error)
   }
   </script>
 
-</head>
-<body>
-<a name="#loginPinch"></a>
-<!-- Start of first page: #logingOne -->
-   <div data-role="page" id="loginOne">
         <div data-role="header">
         <h1>Pinch</h1>
         </div><!-- /header -->
