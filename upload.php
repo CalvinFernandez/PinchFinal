@@ -20,7 +20,7 @@ if ($_FILES["file"]["error"] > 0)
 }
 else
 {
-		echo $_FILES["file"];
+	//	echo $_FILES["file"];
 		move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
 
 		$path = "upload/" . $_FILES["file"]["name"];
@@ -28,16 +28,16 @@ else
 		echo $guid;
 
 		$CurrUser = $_SESSION['Username'];
-		$date_t = date("Y-m-d H:i:s");
+		//$date_t = date("Y-m-d H:i:s");
 		$query = "INSERT INTO Pinches 
-				(Username, Photo, GUID,  Receiver, Datetime) 
+				(Username, Photo, GUID,  Receiver) 
 				VALUES
-				('$CurrUser','$path', '$guid', '$Receiver', '$date_t')";
+				('$CurrUser','$path', '$guid', '$Receiver')";
 		
 		$result = mysql_query($query);
 		//echo $query;
 		if(!($result)){
-			echo "something";
+			echo "bad query";
 		}
 }
 

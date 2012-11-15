@@ -20,33 +20,70 @@ function DisplayPhotoOptions()
 
 function MakePicture(xhr)
 {
-	
 	var response = JSON.parse(xhr.responseText);
 	var img = document.createElement('img');
 	img.setAttribute('id', 'newPhoto');
 	img.setAttribute('src', response.url);
-	if (img.width > img.height)
-		img.width = 200;
-	else
-		img.height = 200;	
-	var zoomDiv = document.createElement('div');
-	zoomDiv.setAttribute("class", "zoomProps");
-	zoomDiv.setAttribute("id", response.id);
-	var styleDiv = document.createElement('div');
-	styleDiv.setAttribute('class', 'polaroid upSky');
+	img.onload = function ()
+	{
+		if (img.width > img.height)
+			img.width = 200;
+		else
+			img.height = 200;
+	
+		var zoomDiv = document.createElement('div');
+		zoomDiv.setAttribute("class", "zoomProps");
+		zoomDiv.setAttribute("id", response.id);
+		var styleDiv = document.createElement('div');
+		styleDiv.setAttribute('class', 'polaroid upSky');
 		
-	zoomDiv.appendChild(styleDiv);
-	styleDiv.appendChild(img);
-	document.getElementById("main").appendChild(zoomDiv);
+		zoomDiv.appendChild(styleDiv);
+		styleDiv.appendChild(img);
+		document.getElementById("main").appendChild(zoomDiv);
 									
-      	var imgID = "#" + response.id;
+      		var imgID = "#" + response.id;
        	var hammerString = "#" + response.id + " :first";
-      	var z = new ZoomView(imgID, hammerString);   
-	$(imgID).bind('tap', function(e)
-        {
-        	alert("tap");
-	});
-	  
+      		var z = new ZoomView(imgID, hammerString);   
+		$(imgID).bind('tap', function(e)
+					{
+						tappedImg = this; //The image that we tapped //
+						tappedImg.style.webkitUserSelect = "auto";
+						if ( document.getElementById("tapOptions").style.display == "none")
+						{
+							document.getElementById("foot").style.display = "none";	
+							document.getElementById("tapOptions").style.display= "inline";
+							$('#save').bind('click', function()
+							{
+								var i = document.createElement("img");
+								i.setAttribute("id", "saveImg");
+								i.src = tappedImg.getElementsByTagName("img")[0].src;
+								i.onload = function()
+								{
+									if (i.width > i.height)
+										i.width = 200;
+									else
+										i.height = 200;
+
+									var save_image_content = document.getElementById("save_image_content");
+									save_image_content.innerHTML = "";
+									save_image_content.appendChild(i);
+								}				
+							});
+							$('#delete').bind('click', function(e)
+							{
+								tappedImg.parentNode.removeChild(tappedImg);
+								document.getElementById("foot").style.display = "inline";
+								document.getElementById("tapOptions").style.display = "none";
+							
+							});
+						}
+						else 
+						{
+							document.getElementById("foot").style.display = "inline";
+							document.getElementById("tapOptions").style.display = "none";
+						}
+					});
+	} 
 	return img;
 }
 
@@ -423,7 +460,7 @@ function MakePicture(xhr)
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var numGetItems = 0;
-    var transforming = false;
+    var transforming = true;
     var pts1 = [];
     var pts2 = [];
 	var dropped = 0; 

@@ -88,7 +88,7 @@ function showError(error)
           echo $_SESSION['Username'];
           ?> </h4>
     <p>You are currently at: </p> 
-  <script> getLocation();  
+  <script> //getLocation();  
   </script>
  
 <div id="mapholder"></div>
@@ -103,7 +103,7 @@ function showError(error)
 	</form>
 		<ul>
                 <li><a href="loggedIn.php" id="home" data-icon="custom" class="ui-btn-active">Home</a></li>
-                <li><a href="pinch.php" id="beer" data-icon="custom">Pinch</a></li>
+                <li><a href="pinch.php" id="beer" data-icon="custom" rel="external">Pinch</a></li>
                 <li><a href="help.php" id="help" data-icon="custom">Help</a></li>
   		</ul>
 </div>

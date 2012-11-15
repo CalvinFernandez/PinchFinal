@@ -21,8 +21,6 @@ if($_SESSION['Username'] != "")
 <script src="jquery.mobile-1.2.0.js"></script>
 <script src="hammer.js"></script>
 <script src="jquery.hammer.js"></script>
-<script src="myLogic.js"></script>
-
 </head>
 <body>
 <a name="#loginPinch"></a>

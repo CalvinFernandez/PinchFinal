@@ -22,6 +22,11 @@
 	color: #000000; 	
 }
 
+#tapOptions
+{
+	display: none;
+}
+
 a.delete{
     float:right;
     margin-top:-15px;
@@ -47,6 +52,7 @@ a.delete{
             height: auto;
             width: auto;
             position:absolute;
+	    -webkit-user-select: auto !important;
 }
 
           #zoomwrapper {
@@ -59,7 +65,7 @@ a.delete{
 .polaroid{
 
 text-align: center;
-
+-webkit-user-select: auto !important;
 padding: 10px 10px 25px 10px;
 background: #eee;
 border: 1px solid #fff;
@@ -78,7 +84,6 @@ text-shadow:#333;
 background: #FFFFFF;
 
 }
-
 
 
 body{
