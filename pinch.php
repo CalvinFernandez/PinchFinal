@@ -19,8 +19,8 @@
 <script src="jquery.mobile-1.2.0.js"></script>
 <script src="hammer.js"></script>
 <script src="jquery.hammer.js"></script>
-
-
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="updateImage.js"></script>
 
 </head> 
 

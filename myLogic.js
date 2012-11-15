@@ -12,7 +12,6 @@ $(function(){
         var zoomlisten = new ZoomListener('#pinch', '#pinch :first');
     });
 
-
 function DisplayPhotoOptions()
 {
 		
@@ -409,7 +408,10 @@ function MakePicture(xhr)
             previousScaleFactor = scaleFactor;
         	var p = wasPinch(pts1, pts2);
 		if ( p == 1)
-		{	    
+		{	
+			var currId = this.id;
+			updateImageData(currId);
+			
 			container.html(""); 
 			container.remove();
 			container = null;
@@ -498,38 +500,8 @@ function MakePicture(xhr)
 		var d = wasDrop(pts1, pts2);
 		if ( d == 1 && dropped == 0)
 		{
-			dropped = 1				
-			xhr = new XMLHttpRequest();
-			xhr.open("GET", "QueryDatabase.php", true);			
-			xhr.send();
-			xhr.onreadystatechange = function(e)	
-			{
-			
-				if (xhr.readyState == 4 && xhr.status == 200) 
-				{
-					MakePicture(xhr);
-					/*var response = JSON.parse(xhr.responseText);
-					var img = document.createElement('img');
-					img.setAttribute('id', 'newPhoto');
-					img.setAttribute('src', response.url);
-					if (img.width > img.height)
-						img.width = 200;
-					else
-						img.height = 200;	
-					var zoomDiv = document.createElement('div');
-					zoomDiv.setAttribute("class", "zoomProps");
-					zoomDiv.setAttribute("id", response.id);
-					var styleDiv = document.createElement('div');
-					styleDiv.setAttribute('class', 'polaroid upSky');
-		
-					zoomDiv.appendChild(styleDiv);
-					styleDiv.appendChild(img);
-					document.getElementById("main").appendChild(zoomDiv);
-									
-                 			var imgID = "#" + response.id;
-                            		var hammerString = "#" + response.id + " :first";*/
-				}
-			}
+			dropped = 1
+			getImage();
 		}	
 	});
 

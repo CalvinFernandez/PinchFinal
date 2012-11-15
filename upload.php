@@ -20,15 +20,15 @@ if ($_FILES["file"]["error"] > 0)
 }
 else
 {
-	//	echo $_FILES["file"];
-		move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
-
-		$path = "upload/" . $_FILES["file"]["name"];
 		$guid = GUID();
+	//	echo $_FILES["file"];
+		move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $guid . $_FILES["file"]["name"]);
+
+		$path = "upload/" . $guid . $_FILES["file"]["name"];
 		echo $guid;
 
 		$CurrUser = $_SESSION['Username'];
-		//$date_t = date("Y-m-d H:i:s");
+		$date_t = date("Y-m-d H:i:s");
 		$query = "INSERT INTO Pinches 
 				(Username, Photo, GUID,  Receiver) 
 				VALUES

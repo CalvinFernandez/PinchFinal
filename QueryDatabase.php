@@ -5,7 +5,7 @@ mysql_select_db("c_cs147_goizueta");
 $Username = $_SESSION['Username'];
 $query = "SELECT * 
 		FROM Pinches
-	        WHERE Datetime = ( 
+	    WHERE Datetime = ( 
 		SELECT MAX(Datetime) 
 		FROM Pinches )";
 
