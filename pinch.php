@@ -58,60 +58,60 @@
         {
         	var img = document.createElement("img");
             img.src = window.URL.createObjectURL(files[0]);
-		img.onload = function()
-		{
-			if (img.width > img.height)
-				img.width = 200;
-			else
-				img.height = 200;
-
-			var formData = new FormData(document.getElementById("imageForm"));
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', 'upload.php/no-cache?' + Date.now(), true);
-			xhr.setRequestHeader("pragma", "no-cache");
-			xhr.send(formData);
-        		xhr.onreadystatechange = function()
+			img.onload = function()
 			{
-				if (xhr.readyState == 4 && xhr.status==200)
+				if (img.width > img.height)
+					img.width = 200;
+				else
+					img.height = 200;
+					
+				var formData = new FormData(document.getElementById("imageForm"));
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', 'upload.php/no-cache?' + Date.now(), true);
+				xhr.setRequestHeader("pragma", "no-cache");
+				xhr.send(formData);
+        		xhr.onreadystatechange = function()
 				{
-					var zoomDiv = document.createElement('div');
-					zoomDiv.setAttribute("id", xhr.responseText);
-					zoomDiv.setAttribute("class", "zoomProps");
-			
-					var styleDiv = document.createElement('div');
-					styleDiv.setAttribute('class', 'polaroid upSky');
-				
-					zoomDiv.appendChild(styleDiv);
-					styleDiv.appendChild(img);
-					document.getElementById("main").appendChild(zoomDiv);
-					var imgID = "#" + xhr.responseText;
-					var hammerString = "#" + xhr.responseText + " :first";
-					var z = new ZoomView(imgID, hammerString); 				
-					$(imgID).bind('tap', function(e)
+					if (xhr.readyState == 4 && xhr.status==200)
 					{
-						tappedImg = this; //The image that we tapped //
-						tappedImg.style.webkitUserSelect = "auto";
-						if ( document.getElementById("tapOptions").style.display == "none")
+						var zoomDiv = document.createElement('div');
+						zoomDiv.setAttribute("id", xhr.responseText);
+						zoomDiv.setAttribute("class", "zoomProps");
+			
+						var styleDiv = document.createElement('div');
+						styleDiv.setAttribute('class', 'polaroid upSky');
+				
+						zoomDiv.appendChild(styleDiv);
+						styleDiv.appendChild(img);
+						document.getElementById("main").appendChild(zoomDiv);
+						var imgID = "#" + xhr.responseText;
+						var hammerString = "#" + xhr.responseText + " :first";
+						var z = new ZoomView(imgID, hammerString); 				
+						$(imgID).bind('tap', function(e)
 						{
-							document.getElementById("foot").style.display = "none";	
-							document.getElementById("tapOptions").style.display= "inline";
-							$('#save').bind('click', function()
+							tappedImg = this; //The image that we tapped //
+							tappedImg.style.webkitUserSelect = "auto";
+							if ( document.getElementById("tapOptions").style.display == "none")
 							{
-								var i = document.createElement("img");
-								i.setAttribute("id", "saveImg");
-								i.src = tappedImg.getElementsByTagName("img")[0].src;
-								i.onload = function()
+								document.getElementById("foot").style.display = "none";	
+								document.getElementById("tapOptions").style.display= "inline";
+								$('#save').bind('click', function()
 								{
-									if (i.width > i.height)
-										i.width = 200;
-									else
-										i.height = 200;
+									var i = document.createElement("img");
+									i.setAttribute("id", "saveImg");
+									i.src = tappedImg.getElementsByTagName("img")[0].src;
+									i.onload = function()
+									{
+										if (i.width > i.height)
+											i.width = 200;
+										else
+											i.height = 200;
 
-									var save_image_content = document.getElementById("save_image_content");
-									save_image_content.innerHTML = "";
-									save_image_content.appendChild(i);
-								}				
-							});
+										var save_image_content = document.getElementById("save_image_content");
+										save_image_content.innerHTML = "";
+										save_image_content.appendChild(i);
+									}				
+								});
 							$('#delete').bind('click', function(e)
 							{
 								tappedImg.parentNode.removeChild(tappedImg);
@@ -166,7 +166,7 @@
 
 <div data-role="page" id="saver" data-theme="a" data-url="saver" tabindex="0" class="ui-page ui-body-a" style="min-height: 125px;">
 	<div data-role="header" class="ui-header ui-bar-a" role="banner">
-		<h1>Tap and hold image to save</h1>
+		Tap and hold image to save
 	</div>
 	<div id="save_image_content" style="position:absolute;">
 	</div>
